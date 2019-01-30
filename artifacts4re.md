@@ -52,11 +52,15 @@ We look forward to your submissions!
 **Q2:** Not every study lends itself to reproducibility. Isn't badging implicitly impugning these studies?
 
 **A:** There is a risk that badges confer status, and studies without badges are seen as inferior, even if a badge would be hard to earn (for example, on a purely theoretical result). However, we trust that the community would be able to discern the differences between an empirical study with no badge, and a theoretical study with no badge.
+
 ----
+
 **Q3:** Requirements research is less amenable to reproducibility than other software engineering research, like repository mining or defect prediction.
 
 **A:** See the "Drift Away" section above for a longer answer. But in general, as an engineering discipline, most RE research should have some implications for practice, and thus reproducibility of the results is important. 
+
 ----
+
 **Q4**: Reproducibility implies criticism of the original study and leads to bad feeling in the community. 
 
 **A:** It is certainly *possible* to conduct a replication, contradict the original findings, and deeply annoy the original authors. There are two responses to this. One, repeated tests of hypotheses are part and parcel of good scientific practice, and the fallibility of the original work should not imply any criticism of the researchers who conducted that work. But secondly, collegiality and etiquette suggest that prior to formal publication of a replication, the original study authors should be given an opportunity to comment on the new results. See Kahnemann, "A New Etiquette For Replication", Soc. Psych. 45, 310, (2014).
