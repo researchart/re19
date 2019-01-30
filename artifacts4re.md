@@ -4,10 +4,13 @@ The open science era recognizes that artifacts are critical to the reproducibili
 
 For the first time, the Requirements Engineering conference in 2019 will include artifact evaluation for those authors who wish to participate. A small AEC will evaluate accepted research papers that submit for badging, and assign one or more of the five ACM/IEEE artifact badges.
 
-# Why Now? The Drift From Artifacts in RE Research
+# Why Now? The Drift Away From Artifact-Driven RE Research
+The motivation behind creating an artifact track at RE 2019 was a general dissatisfaction with the state of the science behind requirements engineering. Too many papers were appearing with grandiose claims and little way for those claims to be tested. There was (and remains) a danger that without reproducible results, the scientific rigor of the RE conference series will be diminished, and the community as a whole devalued. Artifact evaluation has been part of communities like Programming Languages for years now (e.g., [PLDI and OOPSLA](http://evaluate.inf.usi.ch/artifacts) have had this since 2013/2014). The data challenge/data track approach from RE2018 and RE2017, while well-intentioned, do not motivate replication but rather data-driven research, which is not the same thing. Furthermore, we are currently experience a golden age as far as data availability, whether from software repositories or mining natural language documents like app store reviews.
+
+However, we would be remiss if we insisted that every paper should be accompanied by artifacts. We need to recognize that reproducibility is not relevant for a substantial amount of rigorous high-quality RE research. For example, researchers with a philosophical perspective like constructivism or interpretivism would reject the notion that replication is desirable. These paradigms reject the notion of a single, universal truth (assumed by positivism). In that context, for example, how can one researcher's interpretation of a set of interviews be replicated? In a human-dominated research subject like requirements engineering, many useful and valid studies exist that are not reproducible, often qualitative in nature. A push for more reproducible research should ensure that these studies are not left behind or devalued.
 
 # What Is An Artifact?
-This naturally raises the question of what an RE artifact is. The wider software engineering community has created a [list of artifacts](https://github.com/researchart/all/blob/master/ListOfArtifacts.md) for AECs at ICSE18, FSE18, and ICSE19. The list, ranked in order of size, includes:
+This naturally raises the question of what an RE artifact is. The wider software engineering community has created a [list of artifacts](https://github.com/researchart/all/blob/master/ListOfArtifacts.md) for AECs at ICSE18, [FSE18](https://2018.fseconference.org/track/fse-2018-The-ROSE-Festival-Recognizing-and-Rewarding-Open-Science-in-Software-Engineering), and ICSE19. The list, ranked in order of size, includes:
 * research hypotheses
 * statistical tests
 * baseline results
@@ -41,7 +44,7 @@ We look forward to your submissions!
 
 **A:** That is not a question. But seriously, badging has turned out to be a crazy-strong motivation for reproducibility. Better question is to ask "what is a better badge to award"?
 
-**A**: Plenty of interesting results: see [ICSE Rose Track 2019](), [FSE ROSE Track 2019](), SANER RENE Track 2018]().
+**A**: Plenty of interesting results: see [ICSE Rose Track 2019](https://2019.icse-conferences.org/track/icse-2019-ROSE-Festival), [FSE ROSE Track 2019](https://2018.fseconference.org/track/fse-2018-The-ROSE-Festival-Recognizing-and-Rewarding-Open-Science-in-Software-Engineering), [SANER RENE Track 2018](http://saner.unimol.it/negativerestrack).
 
 **A:** Badges improve artifact availability, as shown [in this study](https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1002456).
 
