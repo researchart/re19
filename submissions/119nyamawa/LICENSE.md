@@ -1,0 +1,1 @@
+Permission is hereby granted, free of charge, to any person obtaining these source code and associated data to use them for academic purposes. In addition, authors provide no warranty with the source code/documentation and are not liable for anything. 

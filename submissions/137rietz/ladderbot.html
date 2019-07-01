@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      /*CSS for web container*/
+      .jumbotron {
+        background-color: #2C3531;
+      }
+
+      /*CSS for bot area*/
+      #webchat {
+        border: 1px solid grey;
+      }
+
+      /*CSS for Visualization area*/
+      circle {
+        fill: white;
+        stroke: steelblue;
+        stroke-width: 2px;
+      }
+
+      line {
+        stroke: grey;
+        stroke-width: 3px;
+      }
+
+      .incRect {
+        stroke: grey;
+        shape-rendering: crispEdges;
+      }
+
+      #navdiv {
+        background: #555;
+      }
+
+      #treesvg {
+        border: 1px solid grey;
+      }
+
+      #navdiv button,
+      #navdiv textarea {
+        vertical-align: middle;
+      }
+
+      #g_labels text {
+        text-anchor: middle;
+      }
+
+      #clickableHeadline {
+        cursor: pointer;
+      }
+    </style>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <!-- Importing D3 for visualization and botframework for webchat -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  </head>
+
+  <body>
+    <!-- Here goes the bootstrap content code as well as html website content -->
+    <div class="jumbotron text-center">
+      <h1>LadderBot</h1>
+      <p>Initial draft. Powered by MS botframework sdk4 @ node.js / d3.js / bootstrap.</p>
+      <p>Made with ♥️ in Karlsruhe</p>
+      <button type="button" class="btn btn-info" id="switchLabelLayout">Short labels</button>  
+    </div>
+  
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-8" id="visualization">
+          <h3 id="clickableHeadline">Interactive visualization  <small>click headline to reset zoom</small></h3>
+        </div>
+        <div class="col-sm-4">
+          <h3>LadderBot interface</h3>        
+          <div id="webchat" role="main"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Here goes the web chat controll code as well as client - bot communication -->
+
+    <script>
+    // ------  Here goes the visualization interface, might be exported to a special file in the future ------
+
+    function tree() {
+      var svgW = '100%', //width of svg canvas
+        svgH = 502,   //height of svg canvas --currently set to 502 to match 500 height of chatbot interface
+        vRad = 24,
+        rx = 6,       //rounded edges of rects
+        ry = 6,       //rounded edges of rects
+        rwidth = 180, //width of rects
+        rheight = 30, //standard height of rects 
+        tree = {
+          cx: 400,
+          cy: 30,
+          w: rwidth + 80,      //width of each 'branch' of the tree
+          h: 50               //height of each 'branch' of the tree
+        };
+
+      tree.vis = {
+        v: 0,
+        l: 'Smartphone service',  //label of first node
+        lshort: '',               //shortened label
+        p: {
+          x: tree.cx,
+          y: tree.cy,
+          hDyna: tree.h
+        },
+        c: []
+      };
+
+      tree.size = 1;
+      tree.incX = 500, tree.incY = 30, tree.incS = 20;
+
+      function wrap(text, width, X, Y) {
+        text.each(function() {
+          var text = d3.select(this),
+              words = text.text().split(/\s+/).reverse(),
+              word,
+              line = [],
+              lineNumber = 0,
+              lineHeight = 15, // px
+              tspan = text.text(null).append("tspan").attr("x", X).attr("y", Y).attr("dy", lineNumber);
+          while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+              line.pop();
+              tspan.text(line.join(" "));
+              line = [word];
+              tspan = text.append("tspan").attr("x", X).attr("y", Y).attr("dy", ++lineNumber * lineHeight).text(word);
+            }
+          }
+        }).transition().duration(500);
+      }
+
+      tree.getVertices = function() {
+        var v = [];
+
+        function getVertices(t, f) {
+          v.push({
+            v: t.v,
+            l: t.l,
+            lshort: t.lshort,
+            p: t.p,
+            f: f
+          });
+
+          t.c.forEach(function(d) {
+            return getVertices(d, {
+              v: t.v,
+              p: t.p
+            });
+          });
+        }
+
+        getVertices(tree.vis, {});
+
+        return v.sort(function(a, b) {
+          return a.v - b.v;
+        });
+      }
+
+      tree.getEdges = function() {
+        var e = [];
+
+        function getEdges(_) {
+          _.c.forEach(function(d) {
+            e.push({
+              v1: _.v,
+              l1: _.l,
+              lshort1: _.lshort,
+              p1: _.p,
+              v2: d.v,
+              l2: d.l,
+              lshort2: d.lshort,
+              p2: d.p
+            });
+          });
+          _.c.forEach(getEdges);
+        }
+
+        getEdges(tree.vis);
+
+        return e.sort(function(a, b) {
+          return a.v2 - b.v2;
+        });
+      }
+
+      //function adapted from original to enable adding a label on function call
+      tree.addLeaf = function(_, label, labelShort) {
+        function addLeaf(t) {
+          let tempL = '?';
+          if (t.v == _) {
+            //set label if label is not empty
+            if(label != null) {
+              tempL = label;
+            } 
+              t.c.push({
+                v: tree.size++,
+                l: tempL,
+                lshort: labelShort,
+                p: {},
+                c: []
+              });
+              return;
+          }
+          t.c.forEach(addLeaf);
+        }
+
+        addLeaf(tree.vis);
+        reposition(tree.vis);
+        redraw();
+
+        zoomFit(undefined, 500);
+      }
+
+      redraw = function() {
+        var edges = d3.select("#g_lines").selectAll('line').data(tree.getEdges());
+
+        edges.transition().duration(500).attr('x1', function(d) {
+            return d.p1.x;
+          }).attr('y1', function(d) {
+            return d.p1.y;
+          }).attr('x2', function(d) {
+            return d.p2.x;
+          }).attr('y2', function(d) {
+            return d.p2.y;
+          })
+
+        edges.enter().append('line').attr('x1', function(d) {
+            return d.p1.x;
+          }).attr('y1', function(d) {
+            return d.p1.y;
+          }).attr('x2', function(d) {
+            return d.p1.x;
+          }).attr('y2', function(d) {
+            return d.p1.y;
+          })
+          .transition().duration(500).attr('x2', function(d) {
+            return d.p2.x;
+          }).attr('y2', function(d) {
+            return d.p2.y;
+          });
+
+        var rects = d3.select("#g_rects").selectAll('rect').data(tree.getVertices());
+
+        rects.transition().duration(500).attr('x', function(d) {
+          return d.p.x - (rwidth/2);
+          }).attr('y', function(d) {
+          return d.p.y - (rheight/2);
+          }).style('fill', 'white');
+
+        var labels = d3.select("#g_labels").selectAll('text').data(tree.getVertices());
+
+        labels.text(function(d) {
+            return d.l;
+          })
+          .transition().duration(500).call(wrap, rwidth - 20, function(d) {
+            return d.p.x;
+          }, function(d) {
+            return d.p.y + 5;
+          }).attr('x', function(d) {
+            return d.p.x;
+          }).attr('y', function(d) {
+            return d.p.y + 5;
+          });
+
+        labels.enter().append('text').attr('x', function(d) {
+            return d.f.p.x;
+          }).attr('y', function(d) {
+            return d.f.p.y + 5;
+          }).text(function(d) {
+            return d.l;
+          }).call(wrap, rwidth - 20, function(d) {
+            return d.p.x;
+          }, function(d) {
+            return d.p.y + 5;
+          })
+          .style('fill', 'white')
+          .transition().duration(800).style('fill', 'black');
+
+          let endTextPx = parseInt($("tspan").filter(":last").attr("dy"), 10);
+          console.log('---> ---> endTextPx : ' + endTextPx);
+
+        rects.enter().append('rect').attr('x', function(d) {
+          //initiate callback to change corresponding d to include the adaptive height of the container rect
+            tree.setAdaptiveHeight(d, endTextPx);
+            return d.f.p.x - (rwidth/2);
+          }).attr('y', function(d) {
+            console.log('---- dfpy = ' + d.f.p.y);
+            return d.f.p.y - (rheight/2);
+          }).attr('rx', rx).attr('ry', ry).attr('width', rwidth).attr('height', endTextPx + 30).attr('style', 'fill: #ffcb9a; stroke: black')
+          .transition().duration(500).attr('x', function(d) {
+            return d.p.x - (rwidth/2);
+          }).attr('y', function(d) {
+            return d.p.y  - (rheight/2);
+          });
+      }
+
+      //function to swap label with short labels and redraw everything
+      switchLabelStyle = function() {
+        function switchLabelStyle(v) {
+          v.c.forEach(function(d) {
+            let temp = d.l;
+            d.l = d.lshort;
+            d.lshort = temp;
+            console.log("// labels adjusted: new long - " + d.l + " :: new short: " + d.lshort);
+
+            switchLabelStyle(d);
+          });
+        }
+        switchLabelStyle(tree.vis);
+        reposition(tree.vis);
+        redraw();
+        useParsedLabels = !useParsedLabels;
+      }
+
+      //add function to button
+      d3.select("#switchLabelLayout").on("click", switchLabelStyle);
+
+      //function to add the adaptive height of container in d. This is then considered when the height is recalculated in reposition()
+      tree.setAdaptiveHeight = function(inputD, yOfLastText) {
+        //do this in recursive fashion so method can recall itself for all child nodes of the current node
+        function setAdaptiveHeight(v) {
+          v.c.forEach(function(d) {
+            
+            if(d.p === inputD.p) {
+              d.p = {
+                x: d.p.x,
+                y: d.p.y,
+                hDyna: yOfLastText + 50 //50 set as distance from end of last text: 30 to box and 20 between boxes
+              };
+            }
+            setAdaptiveHeight(d);
+          });
+        }
+        setAdaptiveHeight(tree.vis);
+      }
+
+      getLeafCount = function(_) {
+        if (_.c.length == 0) return 1;
+        else return _.c.map(getLeafCount).reduce(function(a, b) {
+          return a + b;
+        });
+      }
+
+      reposition = function(v, previous) {
+        var lC = getLeafCount(v),
+          left = v.p.x - tree.w * (lC - 1) / 2;
+
+        v.c.forEach(function(d) {
+          var w = tree.w * getLeafCount(d);
+          left += w;
+          //to realize dynamic distance: adaptive height of each box is saved in hDyna of each datapoint. Consider that when repositioning boxes.
+          if(typeof(previous) != 'undefined') {
+            var heightPreviousBox = previous.c[0].p.hDyna;
+          } else {
+            var heightPreviousBox = tree.h;
+          }
+          
+          d.p = {
+            x: left - (w + tree.w) / 2,
+            y: v.p.y + heightPreviousBox,
+            //include this so hDyna is not overwritten on reposition call
+            hDyna: d.p.hDyna
+          };
+        
+          reposition(d, v);
+        });
+      }
+
+      initialize = function() {
+        //d3.select("body").append("div").attr('id', 'navdiv');
+
+        //d3.select("#navdiv").append("nav").attr('id', 'labelnav').style('display', 'inline-block').style('visibility', 'hidden');
+
+        //d3.select("#visualization").append("svg").attr("width", svgW).attr("height", svgH).attr('id', 'treesvg');
+        d3.select("#visualization").append("svg").attr("width", svgW).attr("height", svgH).attr('id', 'treesvg');
+        //add
+        //add lines to svg plane
+        d3.select("#treesvg").append('g').attr('id', 'g_lines').selectAll('line').data(tree.getEdges()).enter().append('line')
+          .attr('x1', function(d) {
+            return d.p1.x;
+          }).attr('y1', function(d) {
+            return d.p1.y;
+          }).attr('x2', function(d) {
+            return d.p2.x;
+          }).attr('y2', function(d) {
+            return d.p2.y;
+          });
+        //add elements to scg plane, in this case, circles. Add event listener to circle.
+        d3.select("#treesvg").append('g').attr('id', 'g_rects').selectAll('rect').data(tree.getVertices()).enter()
+          .append('rect').attr('x', function(d) {
+            return d.p.x - (rwidth/2);
+          }).attr('y', function(d) {
+            return d.p.y - (rheight/2);
+          }).attr('rx', rx).attr('ry', ry).attr('width', rwidth).attr('height', rheight).attr('style', 'fill: white; stroke: black');
+        //add text lables to svg plane, based on 'l' variable. Add event listener to labels.
+        d3.select("#treesvg").append('g').attr('id', 'g_labels').selectAll('text').data(tree.getVertices()).enter().append('text')
+          .attr('x', function(d) {
+            return d.p.x;
+          }).attr('y', function(d) {
+            return d.p.y + 5;
+          }).text(function(d) {
+            return d.l;
+          });
+
+
+        //section for zooming and panning
+        d3.select("#clickableHeadline").on("click", reset);
+
+        var svg = d3.select("svg");
+
+        var zoom = d3.zoom()
+          .scaleExtent([1 / 2, 2])
+          //.translateExtent([[-100, -100],[100, 100]])
+          .on("zoom", zoomed);
+
+        svg.call(zoom);
+
+        function zoomed() {
+          d3.selectAll('g').attr("transform", d3.event.transform);
+        }
+
+        function reset() {
+          svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
+        }
+
+        zoomFit = function(paddingPercent, transitionDuration) {
+          var bounds = svg.node().getBBox();
+          var parent = svg.node();
+          var fullWidth = parent.clientWidth,
+              fullHeight = parent.clientHeight;
+          var width = bounds.width,
+              height = bounds.height + 7; //for some reason, getBBox() has an offset of 7
+          var midX = bounds.x + width / 2,
+              midY = bounds.y + height / 2;
+          console.log("fullwidth: " + fullWidth + ", fullHeight: " + fullHeight + ", width: " + width + ", height: " + height);
+          if (width <= fullWidth && height <= fullHeight) return; // nothing to fit
+          var scale = (paddingPercent || 0.75) / Math.max(width / fullWidth, height / fullHeight);
+          var translate = [fullWidth / 2 - scale * midX, fullHeight / 2 - scale * midY];
+          console.log("translate: " + translate[0] + ", y: " + translate[1]);
+          var transform = d3.zoomIdentity
+            .translate(translate[0], 0)
+            .scale(scale);
+
+          svg
+            .transition()
+            .duration(transitionDuration || 0) // milliseconds
+            .call(zoom.transform, transform);
+        }
+        //function for adding leaf in the first level (0 layer). Not necessary from the start, will be used when first seed is selected
+        //tree.addLeaf(0);
+      }
+      initialize();
+
+      return tree;
+    }
+
+    var tree = tree();
+
+    // ------  Here goes the web chat interface, might be exported to a special file in the future ------
+    //declaration of relevant vars for visualization control
+    let levelV = 0;
+    let visualizationPaused = 3; //stop visualization if visualizationPaused % 3 = 0
+    let useParsedLabels = false;
+
+    (async function () {
+      //initiate directline variable
+      var dl = window.WebChat.createDirectLine({ 
+        secret: 'insert_personal_directline_secret_from_azure_here',
+        conversationId: sessionStorage.getItem("conversationId")
+      });
+
+      //webchat backchannel store to initiate event handlers for incoming / outgoing activities
+      const store = window.WebChat.createStore(
+        {},
+        ({ dispatch }) => next => action => {
+          if(action.type === 'DIRECT_LINE/POST_ACTIVITY') {
+            //connect outgoing event handler and hand over reported data
+            const event = new Event('webchatoutgoingactivity');
+
+            event.data = action.payload.activity;
+            window.dispatchEvent(event);
+          }
+          else if(action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+            const event = new Event('webchatincomingactivity');
+
+            event.data = action.payload.activity;
+            window.dispatchEvent(event);
+          }
+
+          return next(action);
+        });
+
+      //style options for ladderbot chat interface
+      let styleOptions = {
+        rootHeight: 500,
+        bubbleBackground: 'rgba(209, 232, 226, 1)',
+        bubbleFromUserBackground: 'rgba(255, 203, 154, 1)',
+        hideUploadButton: true
+      };
+
+      //webchat render functionality
+      window.WebChat.renderWebChat({
+        directLine: dl,
+        username: 'ClientUserName',
+        styleOptions,
+        store
+      }, document.getElementById('webchat'));
+
+      // ++++ create event handlers ++++
+
+      //outgoing web chat events
+      window.addEventListener('webchatoutgoingactivity', ({ data }) => {
+        // react to outgoing activity
+      });
+
+      //incoming event handler
+      window.addEventListener('webchatincomingactivity', ({ data }) => {
+        //react on message event to screen for FINAL STOP and provide interface adjustment by reloading the webchat element with 'hideSendBox' active
+        if(data.type == 'message') {
+          //only consider bot messages
+          if(data.from.id == 'LadderBot') {
+            //try to get text value from message
+            try {
+              if(data.text.startsWith('THANK YOU') == true) {
+              //do something
+                styleOptions = {
+                  rootHeight: 500,
+                  bubbleBackground: 'rgba(209, 232, 226, 1)',
+                  bubbleFromUserBackground: 'rgba(255, 203, 154, 1)',
+                  hideUploadButton: true,
+                  hideSendBox: true,
+                  disabled: true
+                };
+
+                window.WebChat.renderWebChat({
+                  directLine: dl,
+                  username: 'ClientUserName',
+                  styleOptions,
+                  store
+                }, document.getElementById('webchat'));
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+        }
+
+        //react on events of type event
+        else if(data.type == 'event') {
+
+          //display seed change by adding branch
+          if(data.name == 'seedChange') {
+            console.log('event: seedChange');
+            tree.addLeaf(0, data.value);
+            visualizationPaused += 1;
+            //position where to add current leaf. On change of attribute, levelV is increased both in seedChange and newUserInput event
+            levelV++
+          }
+          //listen explicitly to events with name: newUserInput
+          else if(data.name == 'newUserInput') {
+            console.log('event: newUserInput');
+            //check if visualizationn is to be stopped
+            if(data.value[0] == 'stop' || data.value[0] == 'Stop' || data.value[0] == 'STOP') {
+              visualizationPaused += 1;
+            }
+            //add to visualization
+            else if(visualizationPaused % 3 != 0) {
+              //save bot label and short label for each node : if parsedLabels are used, save parsedText in l, else save regular text in l
+              if(useParsedLabels === true) {
+                tree.addLeaf(levelV, data.value[2], data.value[0]);
+              } else {
+                tree.addLeaf(levelV, data.value[0], data.value[2]);
+              }
+              levelV++;
+            }
+          }
+        }
+      });
+
+    })().catch(err => console.error(err));
+
+    </script>
+  </body>
+</html>

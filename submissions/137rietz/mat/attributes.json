@@ -1,0 +1,14 @@
+{
+    "name": "Sorting attribute list",
+    "version": "0.0.1",
+    "description": "A pregenerated list of attributes to be used as seed for the laddering technique",
+    "author": "TR",
+    "license": "KIT",
+    "list": [
+        "Exam question generator",
+        "Thesis topic crawler",
+        "Course suggestion agent",
+        "Personalized career path advisor",
+        "Internship / Job application system"
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "name": "LadderBot",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "80671430-770d-11e9-9abd-d7da0f6f6673",
+            "name": "http://localhost:3978/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "overrides": null,
+    "path": "/Users/trietz/Desktop/ISSD/1_Research/1_Design Cycle #1/#2_Experiment/2_Prototype/1_Artifact Development/ladder-bot/LadderBot.bot"
+}
