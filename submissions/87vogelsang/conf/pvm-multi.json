@@ -1,0 +1,34 @@
+{
+	"input": ["../data/pvm_dataset.txt"],
+	"reader": "word_emb",
+	"reader_params": {
+		"model_conf": {
+			"corpus_file": "../data/w2v_corpus.txt",
+			"size": 8,
+			"min_count": 1
+		},
+		"sentence_length": 100,
+		"separator": ";",
+		"label_separator": ",",
+		"multilabel": true
+	},
+
+	"model": "word_cnn",
+	"model_params": {
+		"filter_sizes": [2,3],
+		"num_filters_per_size": 32
+	},
+	
+	"optimizer": "adam",
+
+	"driver": "cv",
+	
+	"driver_params": {
+		"epochs": 20,
+		"batch_size": 2
+	},
+	
+	"postprocessing": [
+		{"name": "label_dependencies"}
+	]
+}
