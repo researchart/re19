@@ -37,7 +37,7 @@ Please work in three phases
     - Make your reviewes, assign the badge you think is appropriate, and write some justification text
       into the comments.
     - You review needs to **end** with with sentence **"I recommend a badge of XYZ"**.
-    - When you are done with reviewing, flip the label on the issue (e.g. to "SecondReview" or to "AuthorComment")
+    - When you are done with reviewing, flip the label on the issue (to "AuthorComment"). 
     - When reviewing, please use the criteria shown above.
     - In this phase, until your review is done, the  authors should be silent. 
     - In fact, if the authors make any comment in this period, delete/replace them with the text "authors need to wait until
