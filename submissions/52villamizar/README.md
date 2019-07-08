@@ -2,9 +2,9 @@
 
 This repository contains the instrumentation of the controlled experiment that was conducted in the study named "An Approach for Reviewing Security Related Aspects in Agile Requirements Specifications of Web Applications". You can access to the following artifacts:
 
-* Characterization Questionnaire: The overall goal of the questionnaire is to characterize the experience of the students. The answers were obtained through the questionnaire with the aim at identifying some key characteristics about four knowledge areas: agile software development, requirements engineering, software security and inspections., task description and training material related to this study.
+* Characterization Questionnaire: The overall goal of the questionnaire is to characterize the experience of the students. The answers were obtained through the questionnaire with the aim at identifying some key characteristics about four knowledge areas: agile software development, requirements engineering, software security and inspections.
 
-* Follow-up questionnaire. This questionnaire was based on TAM. We wanted to know if the approach was useful for them and if they found it easy to use. Additionally, we included some open text questions to gather participant feedback about difficulties, benefits and disadvantages of using our approach.
+* Follow-up questionnaire. This questionnaire was based on TAM (Technology Acceptance Model). We wanted to know if the approach was useful for them and if they found it easy to use. Additionally, we included some open text questions to gather participant feedback about difficulties, benefits and disadvantages of using our approach.
 
 * Training. The training material focused on the OWASP security properties and high-level security requirements and on the defect types. No specific training was provided on using the reading technique; therefore, the feasibility of using it without specific training was also indirectly evaluated.
 
