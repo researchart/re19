@@ -1,4 +1,4 @@
-This dataset contains the results of an online questionnaire to assess the end-users' need for explanations in software systems. The questionnaire was shared in December 2018 and was online until January 2019. 171 participants initiate the survey and 107 completed it. We just analyzed the answers of the participants who completed the survey.
+This dataset contains the results of an online questionnaire to assess the end-users' need for explanations in software systems. The questionnaire was shared in December 2018 and was online until January 2019. 171 participants initiate the survey and 107 completed it. We just analyzed the responses of the participants who completed the survey.
 
 
 
@@ -19,11 +19,9 @@ The .xlsx file containing the analyzed data;
 The .pdf file containing instructions about the coded data.
 
 
-The raw data contains only the answers from the 107 participants who completed the survey.
+The raw data contains only the responses from the 107 participants who completed the survey. Blank cells indicate that the participant did not provide a response to the corresponding question or answer option.
 
-Blank cells indicate that the participant did not provide an answers to the corresponding question or answer option.
-
-All answers are anonymyzed and identified by an unique ID.
+All responses are anonymyzed and identified by an unique ID.
 
 _________
 
@@ -31,23 +29,23 @@ Each row is identified by the participant's ID, the date when the questionnaire 
 
 The subsequent columns contain the questions.
 
-We use the following codes before each question. First, the following symbols:
+We use codes before each question. First, one of the following symbols:
 
 (*) as an indication that the question was mandatory; 
 
 (*+)as an indication that the question was mandatory but was conditionnally shown, depending on previous answers;
 
-(+) as an indication that the question was conditionally shown; depending on previous answers;
+(+) as an indication that the question was conditionally shown, depending on previous answers;
 
-Next, the code of the question as it is shown on the questionnaire.
+Next, the code of the question as in the questionnaire.
 
-And, if multiple choice, the code of the answer.
+And, if multiple choice, the code of the answer option.
 
-E.g.: (*+)A2(3)  means that the A2 question on the questionnaire was mandatory and conditionally shown and this column corresponds to the answers related to the answer option 3.
+E.g.: (*+)A2(3)  means that the A2 question in the questionnaire was mandatory and conditionally shown, and that this column contains the responses regarding answer option 3.
 
 
-The title of each column contains the question as on the original questionnaire and, when multiple option answer, the corresponding option is between [] after the question on the title. E.g.: "In a typical day, which category of software/apps do you use on your digital devices most often? (More than one allowed) [Games]", where Games was one of the optional answers.
+After this code, the question as on the original questionnaire is shown and, when multiple option answer, the corresponding option is shown between [] after the question. E.g.: "In a typical day, which category of software/apps do you use on your digital devices most often? (More than one allowed) [Games]", where Games was one of the optional answers.
 
 The questionnaire was available in three languages: Portuguese, German and English. 
 
-Questions in German and Portuguese were translated to English in a subsequent column, and are identified by the word "TRANSLATION" before the question. Questions which were 
+Responses in German and Portuguese were translated to English. These translations are shown in a subsequent column, beside the column with the original responses, and are identified by the word "TRANSLATION" in the title. Responses which were already in English were not translated.
