@@ -20,4 +20,4 @@ The artifacts were organized in 3 phases. This depends on the phase where the ar
 
 In addition, this repository contains the results of the controlled experiments for any validation procedure.
 
-In order to make available the experiment package with all the instruments and the results, we followed open science policies that are available on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3260328.svg)](https://doi.org/10.5281/zenodo.3260328)
+In order to make available the experiment package with all the instruments and the results, we followed open science policies that are available on [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3273298.svg)](https://doi.org/10.5281/zenodo.3273298)
