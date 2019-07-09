@@ -1,4 +1,4 @@
-This dataset contains the results of a online questionnaire to assess the end-users' need for explanations in software systems. The questionnaire was shared in December 2018 and was online until January 2019. 171 participants initiate the survey and 107 completed it. We just analyzed the answers of the participants who completed the survey.
+This dataset contains the results of an online questionnaire to assess the end-users' need for explanations in software systems. The questionnaire was shared in December 2018 and was online until January 2019. 171 participants initiate the survey and 107 completed it. We just analyzed the answers of the participants who completed the survey.
 
 
 
