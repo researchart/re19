@@ -30,7 +30,7 @@ Video lectures associated to the slides in Preliminary Training.pdf, and Mistake
 
 **Learning Outcomes and Context**
 
-The activities included in the presented learning package are appropriate for a module to be integrated in a Requirements Engineering (RE) course, in which the topics of requirements elicitation, analysis, specification, validation, and maintenance are covered. 
+The activities included in the presented training package are appropriate for a module to be integrated in a Requirements Engineering (RE) course, in which the topics of requirements elicitation, analysis, specification, validation, and maintenance are covered. 
 
 We are assuming a 2 to 5 credit course (1 credit = 45 min to 1 hour lecture), either graduate or undergraduate, that can be delivered face to face, online or with a hybrid modality, with the goal of covering the main RE activities.
 
