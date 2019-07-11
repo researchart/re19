@@ -20,6 +20,8 @@ The training package includes the following files.
 6. Product Description 2nd Interview.pdf: description of the product to be used for role playing in the 2nd interview
 7. Feedback Questionnaire.pdf: final questionnaire to get feedback from the students
 
+More information is available in the publication "Learning Requirements Elicitation Interviews with Role-playing, Self-assessment and Peer-review", to appear in the proceedings of the 27th IEEE International Requirements Engineering Conference, 2019. 
+
 The material can be also found at the following URL: https://doi.org/10.5281/zenodo.2625706
 
 Video lectures associated to the slides in Preliminary Training.pdf, and Mistake-based Training.pdf are also available online:
