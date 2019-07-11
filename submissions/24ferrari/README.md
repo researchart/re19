@@ -80,7 +80,7 @@ A suggested timeline to apply the approach is the following:
 - [Days 3-7]: Schedule and execute the 1st interview
 - [Days 8-10]: Students watch the "Mistake-based Training" video and review the 1st interview (self- and peer-review)
 - [Days 11-15]: Schedule and execute the 2nd interview
-- [Days 16-18]: Review of 2nd interview (self- and peer-review)
+- [Days 16-18]: Review of 2nd interview (self- and peer-review) and Feedback Questionnaire
 - [Days 19-21]: Production and submission of the requirements in the form of user stories
 
 The interviews can be conducted via Skype or in a classroom environment. 
