@@ -12,14 +12,14 @@ Friday, Sept 27
 11:00 - 12:30, Room TBD
 
 * 11:00 - 11:06: **Andreas Vogelsang** - Introduction 
-* 11:07 - 11:13: ** Tim Rietz **
-* 11:14 - 11:20: ** Alessio Ferrari **
-<!--* 11:21 - 11:27: 
-* 11:28 - 11:34: 
+* 11:07 - 11:13: **Tim Rietz**
+* 11:14 - 11:20: **Alessio Ferrari**
+* 11:21 - 11:27: **Colin Werner**
+<!--* 11:28 - 11:34: 
 * 11:35 - 11:41: 
 * 11:42 - 11:48:
 * 11:49 - 11:55:-->
-* 11:20 - 12:30: Fishbowl Panel
+* 11:28 - 12:30: Fishbowl Panel
 _____
 
 ## Aim
