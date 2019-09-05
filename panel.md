@@ -2,7 +2,7 @@
 
 <img height=100px src="1024px-KOCIS_Korea_Mugunghwa_Gwanhwamun_06_(9491022209).jpg">
 
-### A track at [RE2019](http://re19.ajou.ac.kr), September 27,2019.
+### A track at [RE2019](http://re19.ajou.ac.kr), September 27, 2019.
 
 _____
 
@@ -15,6 +15,7 @@ Friday, Sept 27
 * 11:07 - 11:13: **Tim Rietz**
 * 11:14 - 11:20: **Alessio Ferrari**
 * 11:21 - 11:27: **Colin Werner**
+* <TBD/Open>
 <!--* 11:28 - 11:34: 
 * 11:35 - 11:41: 
 * 11:42 - 11:48:
